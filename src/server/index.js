@@ -1,30 +1,16 @@
-let express = require('express')
-let path = require('path');
-let http = require('http');
-let socketIO = require('socket.io');
+//Install express server
+const express = require('express');
+const path = require('path');
 
-let app = express();
-let server = http.Server(app);
-let io = socketIO(server);
+const app = express();
 
-const port = process.env.PORT || 3000;
-app.use(express.static(path.join(__dirname, '../../dist/chitty-chat/')))
+// Serve only the static files form the dist directory
+app.use(express.static(__dirname + '/dist/demo-deploy'));
 
-app.get('*', (req, res) => {
-  res
-    .status(200)
-    .sendFile(path.join(__dirname, '../../dist/chitty-chat/index.html'));
-})
-
-io.on('connection', (socket) => {
-    console.log('user connected');
-
-    socket.on('new-message', (message) => {
-        console.log(message);
-        io.emit('new-message', message);
-      });
+app.get('/*', function(req,res) {
+    
+res.sendFile(path.join(__dirname+'/dist/demo-deploy/index.html'));
 });
 
-server.listen(port, () => {
-    console.log(`started on port: ${port}`);
-});
+// Start the app by listening on the default Heroku port
+app.listen(process.env.PORT || 8080);
