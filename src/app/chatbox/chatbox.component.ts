@@ -18,10 +18,13 @@ export class ChatboxComponent implements OnInit {
   @Input() userInfo: User;
   selectedChatRoomID = 'UgQEVNxekZrld8UJqtkZ';
   chatroomSubscription: Subscription;
+  userListSubscription: Subscription;
   selectedName: string;
   text: string;
   message = '';
   messages: string[] = [];
+  email = '';
+  users: string[] = [];
   secretCode = 'secret';
   friendListId = [];
   conversationsListId = [
@@ -65,6 +68,21 @@ export class ChatboxComponent implements OnInit {
       text: 'messages'
     }
   ];
+
+  userListEvents = [
+    {
+      uid: '1',
+      type: 'text',
+      displayName: 'mesages',
+      email: 'example@email.com'
+    },
+    {
+      uid: '2',
+      type: 'text',
+      displayName: 'messages',
+      email: 'example@email.com'
+    }
+  ];
   constructor(
     private chatService: ChatService,
     public auth: AuthService,
@@ -75,12 +93,42 @@ export class ChatboxComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+<<<<<<< HEAD
     this.getChatroomList()
       .then(() => {
         if (this.chatroomList.length) {
           this.openConversation(0);
         }
       });
+=======
+    // this.chatService
+    //   .getMessages()
+    //   .subscribe((message: string) => {
+    //     this.messages.push(message);
+    //     this.events.push({
+    //       from: '1',
+    //       type: 'text',
+    //       text: message
+    //     });
+    //   });
+
+    // this.chatRoomService
+    // .getUpdates(this.selectedChatRoomID)
+    // .subscribe((message: any) => {
+    //   console.log(message);
+    //   message.forEach((element: Chat) => {
+    //     this.events.push({
+    //     from: '1',
+    //     type: 'text',
+    //     text: element.content
+    //   });
+    //   });
+    // });
+    this.updateChatHistory();
+    this.updateUserList();
+    // console.log(this.messages);
+
+>>>>>>> Added interface for adding person by email and listed global users
     console.log(this.userInfo);
   }
 
@@ -187,7 +235,44 @@ export class ChatboxComponent implements OnInit {
                   reject(new Error());
                 }
             }
+          })
+    }
+  }
+  /**
+   * getUserByEmail(email: string) {
+    if (this.email !== '') {
+      this.userInfoService.getUserByEmail(email);
+      this.email = '';
+    }
+  }
+  */
+  addUserByEmail(email: string) {
+    if (this.email !== '') {
+      successMessage: "successfully added";
+      this.userInfoService.getUserByEmail(email).then(
+        () => console.log("successfully added"),
+        ()=>console.log("email does not exist")
+      );
+      this.email = '';
+    }
+  }
+
+  updateUserList() {
+    this.userListEvents = [];
+    this.userListSubscription = this.userInfoService
+      .getUserList()
+      .subscribe((message: any) => {
+        console.log(message);
+        message.forEach((element: User) => {
+          this.userListEvents.push({
+            uid: element.uid,
+            type: 'text',
+            displayName: element.displayName,
+            email: element.email
+          });
+          console.log(this.userListEvents);
         });
       });
   }
 }
+
