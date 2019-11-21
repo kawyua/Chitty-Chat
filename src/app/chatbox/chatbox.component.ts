@@ -236,7 +236,7 @@ export class ChatboxComponent implements OnInit {
                 }
             }
           })
-    }
+    });
   }
   /**
    * getUserByEmail(email: string) {
@@ -248,10 +248,9 @@ export class ChatboxComponent implements OnInit {
   */
   addUserByEmail(email: string) {
     if (this.email !== '') {
-      successMessage: "successfully added";
       this.userInfoService.getUserByEmail(email).then(
-        () => console.log("successfully added"),
-        ()=>console.log("email does not exist")
+        () => console.log('successfully added'),
+        () => console.log('email does not exist')
       );
       this.email = '';
     }
