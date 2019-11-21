@@ -254,21 +254,12 @@ export class ChatboxComponent implements OnInit {
       objDiv.scrollTop = objDiv.scrollHeight;
     }
   }
-  
-  /**
-   * getUserByEmail(email: string) {
-    if (this.email !== '') {
-      this.userInfoService.getUserByEmail(email);
-      this.email = '';
-    }
-  }
-  */
+
   addUserByEmail(email: string) {
     if (this.email !== '') {
-      successMessage: "successfully added";
       this.userInfoService.getUserByEmail(email).then(
-        () => console.log("successfully added"),
-        ()=>console.log("email does not exist")
+        () => console.log('successfully added'),
+        () => console.log('email does not exist')
       );
       this.email = '';
     }
