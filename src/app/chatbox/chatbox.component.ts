@@ -93,42 +93,13 @@ export class ChatboxComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-<<<<<<< HEAD
     this.getChatroomList()
       .then(() => {
         if (this.chatroomList.length) {
           this.openConversation(0);
         }
       });
-=======
-    // this.chatService
-    //   .getMessages()
-    //   .subscribe((message: string) => {
-    //     this.messages.push(message);
-    //     this.events.push({
-    //       from: '1',
-    //       type: 'text',
-    //       text: message
-    //     });
-    //   });
-
-    // this.chatRoomService
-    // .getUpdates(this.selectedChatRoomID)
-    // .subscribe((message: any) => {
-    //   console.log(message);
-    //   message.forEach((element: Chat) => {
-    //     this.events.push({
-    //     from: '1',
-    //     type: 'text',
-    //     text: element.content
-    //   });
-    //   });
-    // });
-    this.updateChatHistory();
     this.updateUserList();
-    // console.log(this.messages);
-
->>>>>>> Added interface for adding person by email and listed global users
     console.log(this.userInfo);
   }
 
@@ -235,17 +206,10 @@ export class ChatboxComponent implements OnInit {
                   reject(new Error());
                 }
             }
-          })
+          });
     });
   }
-  /**
-   * getUserByEmail(email: string) {
-    if (this.email !== '') {
-      this.userInfoService.getUserByEmail(email);
-      this.email = '';
-    }
-  }
-  */
+
   addUserByEmail(email: string) {
     if (this.email !== '') {
       this.userInfoService.getUserByEmail(email).then(
