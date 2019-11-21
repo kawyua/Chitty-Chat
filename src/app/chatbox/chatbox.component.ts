@@ -33,10 +33,13 @@ export class ChatboxComponent implements OnInit {
   @Input() userInfo: User;
   selectedChatRoomID = 'UgQEVNxekZrld8UJqtkZ';
   chatroomSubscription: Subscription;
+  userListSubscription: Subscription;
   selectedName: string;
   text: string;
   message = '';
   messages: string[] = [];
+  email = '';
+  users: string[] = [];
   secretCode = 'secret';
   friendListId = [];
   conversationsListId = [
@@ -99,6 +102,21 @@ export class ChatboxComponent implements OnInit {
       text: 'messages'
     }
   ];
+
+  userListEvents = [
+    {
+      uid: '1',
+      type: 'text',
+      displayName: 'mesages',
+      email: 'example@email.com'
+    },
+    {
+      uid: '2',
+      type: 'text',
+      displayName: 'messages',
+      email: 'example@email.com'
+    }
+  ];
   constructor(
     private chatService: ChatService,
     public auth: AuthService,
@@ -133,6 +151,7 @@ export class ChatboxComponent implements OnInit {
     //   });
     // });
     this.updateChatHistory();
+    this.updateUserList();
     // console.log(this.messages);
 
     console.log(this.userInfo);
@@ -234,5 +253,42 @@ export class ChatboxComponent implements OnInit {
       const objDiv = document.getElementById('content');
       objDiv.scrollTop = objDiv.scrollHeight;
     }
+  }
+  
+  /**
+   * getUserByEmail(email: string) {
+    if (this.email !== '') {
+      this.userInfoService.getUserByEmail(email);
+      this.email = '';
+    }
+  }
+  */
+  addUserByEmail(email: string) {
+    if (this.email !== '') {
+      successMessage: "successfully added";
+      this.userInfoService.getUserByEmail(email).then(
+        () => console.log("successfully added"),
+        ()=>console.log("email does not exist")
+      );
+      this.email = '';
+    }
+  }
+
+  updateUserList() {
+    this.userListEvents = [];
+    this.userListSubscription = this.userInfoService
+      .getUserList()
+      .subscribe((message: any) => {
+        console.log(message);
+        message.forEach((element: User) => {
+          this.userListEvents.push({
+            uid: element.uid,
+            type: 'text',
+            displayName: element.displayName,
+            email: element.email
+          });
+          console.log(this.userListEvents);
+        });
+      });
   }
 }
